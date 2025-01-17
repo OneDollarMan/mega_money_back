@@ -34,7 +34,7 @@ async def get_current_user(
 
 
 async def get_admin_user(user: User = Depends(get_current_user)):
-    if user.address != '0x6297d5267f39c99991e70465e7cbf6f6f5f8f6f4':
+    if user.address.lower() != '0x6297d5267f39c99991e70465e7cbf6f6f5f8f6f4':
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Access denied")
     return user
 
