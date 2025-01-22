@@ -2,14 +2,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.middleware.cors import CORSMiddleware
-
 from web3_layer import verify_metamask_message_signature
 from service import get_all_lootboxes, open_lootbox, get_or_create_user, get_all_prizes, create_prize, create_lootbox, \
-    upload_lootbox_image
+    upload_lootbox_image, get_user_claimed_prizes
 from db import get_async_session
 from models import User
 from schemas import AuthRequest, AuthResponse, LootboxReadSchema, LootboxOpenSchema, PrizeReadSchema, UserReadSchema, \
-    PrizeCreateSchema, LootboxCreateSchema
+    PrizeCreateSchema, LootboxCreateSchema, ClaimedPrizeReadSchema
 from users import get_current_user, create_jwt, get_admin_user
 from db import create_db_and_tables
 
@@ -48,8 +47,13 @@ async def verify_signature(data: AuthRequest, s: AsyncSession = Depends(get_asyn
 
 
 @app.get('/users/me', response_model=UserReadSchema, tags=['users'])
-async def get_users_me(user: User = Depends(get_current_user)):
+async def get_user(user: User = Depends(get_current_user)):
     return user
+
+
+@app.get('/users/claimed_prizes', response_model=list[ClaimedPrizeReadSchema], tags=['users'])
+async def get_claimed_prizes(s: AsyncSession = Depends(get_async_session), user: User = Depends(get_current_user)):
+    return await get_user_claimed_prizes(s, user)
 
 
 @app.get('/prizes', response_model=list[PrizeReadSchema], tags=['prizes'])

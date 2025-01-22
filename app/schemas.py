@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 from decimal import Decimal
 from pydantic import BaseModel
 from config import PrizeQualityEnum, PrizeTypeEnum
@@ -27,6 +28,7 @@ class PrizeReadSchema(BaseModel):
     quality: PrizeQualityEnum
     drop_chance: Decimal
     type: PrizeTypeEnum
+    tokens_amount: Decimal
 
 
 class PrizeCreateSchema(BaseModel):
@@ -35,6 +37,13 @@ class PrizeCreateSchema(BaseModel):
     quality: PrizeQualityEnum
     drop_chance: Decimal
     type: PrizeTypeEnum
+    tokens_amount: Decimal
+
+
+class ClaimedPrizeReadSchema(BaseModel):
+    id: int
+    claim_date: datetime
+    prize: PrizeReadSchema
 
 
 class LootboxReadSchema(BaseModel):

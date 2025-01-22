@@ -26,6 +26,7 @@ class PrizeQualityEnum(Enum):
     epic = 'Epic'
     legendary = 'Legendary'
 
+
 class PrizeTypeEnum(Enum):
     TOKENS = 'Tokens'
     NFT = 'NFT'
