@@ -25,7 +25,7 @@ async def get_user_by_address(s: AsyncSession, address: str) -> User | None:
 async def get_or_create_user(s: AsyncSession, address: str) -> User:
     user = await get_user_by_address(s, address)
     if not user:
-        user = User(address=address, name=None, balance=Decimal(1000))
+        user = User(address=address, name=None, balance=Decimal(10000))
         s.add(user)
         await s.commit()
         await s.refresh(user)
