@@ -1,29 +1,29 @@
 services:
   backend:
     build: .
-    command: uvicorn app:app --host 0.0.0.0 --reload
+    command: uvicorn app:app --host 0.0.0.0 --reload --root-path /api
     volumes:
       - ./app:/app
       - ./static:/static
     container_name: backend
     env_file: ".env"
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     depends_on:
       - postgresql
     networks:
-      - my_network
+      - megamoney_network
 
   postgresql:
     image: postgres:latest
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
     env_file: ".env"
     container_name: postgres
     volumes:
       - postgresql_volume:/var/lib/postgresql/data/
     networks:
-      - my_network
+      - megamoney_network
 
   nginx:
     image: nginx:latest
@@ -36,11 +36,11 @@ services:
     depends_on:
       - backend
     networks:
-      - my_network
+      - megamoney_network
 
 volumes:
   postgresql_volume:
 
 networks:
-  my_network:
+  megamoney_network:
     external: true
