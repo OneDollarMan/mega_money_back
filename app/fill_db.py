@@ -8,7 +8,7 @@ from models import Prize, Lootbox
 lootboxes_data = [
     {
         "name": "Basic Lootbox",
-        "open_price": Decimal("5.00"),
+        "open_price": Decimal("50.00"),
         "prizes": [
             {"name": "Common Token", "quality": PrizeQualityEnum.common, "drop_chance": Decimal("0.5"), "type": PrizeTypeEnum.TOKENS, "tokens_amount": Decimal("10.00")},
             {"name": "Uncommon Token", "quality": PrizeQualityEnum.uncommon, "drop_chance": Decimal("0.3"), "type": PrizeTypeEnum.TOKENS, "tokens_amount": Decimal("20.00")},
@@ -19,7 +19,7 @@ lootboxes_data = [
     },
     {
         "name": "Premium Lootbox",
-        "open_price": Decimal("10.00"),
+        "open_price": Decimal("100.00"),
         "prizes": [
             {"name": "Uncommon Token", "quality": PrizeQualityEnum.uncommon, "drop_chance": Decimal("0.4"), "type": PrizeTypeEnum.TOKENS, "tokens_amount": Decimal("20.00")},
             {"name": "Rare Token", "quality": PrizeQualityEnum.rare, "drop_chance": Decimal("0.3"), "type": PrizeTypeEnum.TOKENS, "tokens_amount": Decimal("50.00")},
