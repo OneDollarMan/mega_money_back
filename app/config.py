@@ -9,6 +9,7 @@ PG_PORT = os.getenv("POSTGRES_PORT")
 PG_DB = os.getenv("POSTGRES_DB")
 DATABASE_URL = f'postgresql+asyncpg://{PG_USER}:{PG_PASSWORD}@{PG_HOST}:{PG_PORT}/{PG_DB}'
 PLATFORM_URL = os.getenv("PLATFORM_URL", 'http://127.0.0.1')
+MANIFEST_URL = 'http://191.96.11.165/static/frontend/tonconnect-manifest.json'
 
 #JWT TOKEN CONFIG
 SECRET_KEY = "your_secret_key"

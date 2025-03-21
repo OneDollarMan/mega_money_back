@@ -2,13 +2,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.middleware.cors import CORSMiddleware
-from web3_layer import verify_metamask_message_signature
+from web3_layer import generate_ton_payload, verify_ton_proof
 from service import get_all_lootboxes, open_lootbox, get_or_create_user, get_all_prizes, create_prize, create_lootbox, \
     upload_lootbox_image, get_user_claimed_prizes
 from db import get_async_session
 from models import User
-from schemas import AuthRequest, AuthResponse, LootboxReadSchema, LootboxOpenSchema, PrizeReadSchema, UserReadSchema, \
-    PrizeCreateSchema, LootboxCreateSchema, ClaimedPrizeReadSchema
+from schemas import TonProofItem, AuthResponse, LootboxReadSchema, LootboxOpenSchema, PrizeReadSchema, UserReadSchema, \
+    PrizeCreateSchema, LootboxCreateSchema, ClaimedPrizeReadSchema, TonPayload
 from users import get_current_user, create_jwt, get_admin_user
 from db import create_db_and_tables
 
@@ -38,12 +38,17 @@ app.add_middleware(
 )
 
 
+@app.get("/auth/payload", response_model=TonPayload, tags=['users'])
+async def get_payload():
+    return generate_ton_payload()
+
+
 @app.post("/auth/verify", response_model=AuthResponse, tags=['users'])
-async def verify_signature(data: AuthRequest, s: AsyncSession = Depends(get_async_session)):
-    address = verify_metamask_message_signature(data.signature)
+async def verify_signature(data: TonProofItem, s: AsyncSession = Depends(get_async_session)):
+    address = verify_ton_proof(data)
     await get_or_create_user(s, address)
     token = create_jwt(address)
-    return {"access_token": token, "token_type": "bearer"}
+    return AuthResponse(access_token=token, token_type='bearer')
 
 
 @app.get('/users/me', response_model=UserReadSchema, tags=['users'])

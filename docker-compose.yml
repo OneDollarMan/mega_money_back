@@ -1,7 +1,7 @@
 services:
   backend:
     build: .
-    command: uvicorn app:app --host 0.0.0.0 --reload --root-path /api
+    command: uvicorn app:app --host 0.0.0.0 --root-path /api
     volumes:
       - ./app:/app
       - ./static:/static

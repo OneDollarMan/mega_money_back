@@ -1,0 +1,25 @@
+services:
+  backend:
+    build: .
+    command: uvicorn app:app --host 0.0.0.0 --reload
+    volumes:
+      - ./app:/app
+      - ./static:/static
+    container_name: backend
+    env_file: "dev.env"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgresql
+
+  postgresql:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    env_file: ".env"
+    container_name: postgres
+    volumes:
+      - postgresql_volume:/var/lib/postgresql/data/
+
+volumes:
+  postgresql_volume:
